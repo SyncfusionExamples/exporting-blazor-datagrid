@@ -1,0 +1,75 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.Grids
+@using System.IO;
+@using Syncfusion.XlsIO
+@using Syncfusion.ExcelExport;
+@inject IJSRuntime JSRuntime
+@using Exporting_Stream.Components.Data;
+
+
+<SfGrid ID="Grid" @ref="Grid" DataSource="@Orders" Toolbar="@(new List<string>() { "ExcelExport"})" AllowExcelExport="true" AllowPaging="true">
+    <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OrderData"></GridEvents>
+    <GridColumns>
+        <GridColumn Field=@nameof(OrderData.OrderID) HeaderText="Order ID" TextAlign="TextAlign.Right" Width="120" IsPrimaryKey="true" />
+        <GridColumn Field=@nameof(OrderData.CustomerID) HeaderText="Customer Name" Width="150" />
+        <GridColumn Field=@nameof(OrderData.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120" />
+        <GridColumn Field=@nameof(OrderData.ShipCity) HeaderText="Ship City" Width="150" />
+        <GridColumn Field=@nameof(OrderData.ShipName) HeaderText="Ship Name" Width="150" />
+    </GridColumns>
+</SfGrid>
+
+@code {
+    private SfGrid<OrderData> Grid;
+    public List<OrderData> Orders { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Orders = OrderData.GetAllRecords();
+    }
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport") //Id is combination of Grid's ID and itemname.
+        {
+            //Merging two memory stream for Excel export.
+            MemoryStream mergedStream = new MemoryStream();
+
+            MemoryStream streamDoc1 = await Grid.ExportToExcelAsync(asMemoryStream: true);
+
+            //Create a copy of streamDoc1 to access the memory stream.
+            MemoryStream copyOfStreamDoc1 = new MemoryStream(streamDoc1.ToArray());
+
+            //Customized Grid memory stream.
+            ExcelExportProperties ExcelProperties = new ExcelExportProperties();
+            ExcelTheme Theme = new ExcelTheme();
+            ExcelStyle ThemeStyle = new ExcelStyle()
+                {
+                    BackColor = "#C67878"
+                };
+            Theme.Header = ThemeStyle;
+            Theme.Record = ThemeStyle;
+            ExcelProperties.Theme = Theme;
+            MemoryStream streamDoc2 = await Grid.ExportToExcelAsync(asMemoryStream: true, ExcelProperties);
+
+            //Create a copy of streamDoc2 to access the memory stream.
+            MemoryStream copyOfStreamDoc2 = new MemoryStream(streamDoc2.ToArray());
+
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Xlsx;
+                IWorkbook workbook1 = application.Workbooks.Open(copyOfStreamDoc1);
+                IWorkbook workbook2 = application.Workbooks.Open(copyOfStreamDoc2);
+
+                //Copy first worksheet from the workbook1 workbook to the workbook2 workbook.
+                workbook2.Worksheets.AddCopy(workbook1.Worksheets[0]);
+                workbook2.ActiveSheetIndex = 1;
+
+                //Saving merged workbook as memory stream.
+                workbook2.SaveAs(mergedStream);
+            }
+
+            await JSRuntime.InvokeVoidAsync("saveAsFile", new object[] { "MemoryStreamMerge.xlsx", Convert.ToBase64String(mergedStream.ToArray()), true });
+        }
+    }
+}
