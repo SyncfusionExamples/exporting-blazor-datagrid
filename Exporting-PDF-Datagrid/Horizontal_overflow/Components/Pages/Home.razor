@@ -1,0 +1,48 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+
+<div style="margin-bottom: 15px;">
+    <label style="padding-right: 10px;">Enable or disable Horizontal Overflow property</label>
+    <SfSwitch @bind-Checked="DisableHorizontalOverflow" />
+</div>
+
+<SfGrid ID="Grid" @ref="Grid" DataSource="@Orders" AllowPaging="true" AllowPdfExport="true" Toolbar="@(new List<string>() { "PdfExport" })" Height="348">
+    <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OrderData"></GridEvents>
+    <GridColumns>
+        <GridColumn Field="OrderID" HeaderText="Order ID" Width="90" TextAlign="TextAlign.Right" />
+        <GridColumn Field="CustomerID" HeaderText="Customer ID" Width="100" />
+        <GridColumn Field="ShipCity" HeaderText="Ship City" Width="100" />
+        <GridColumn Field="ShipName" HeaderText="Ship Name" Width="120" />
+        <GridColumn Field="ShipAddress" HeaderText="Ship Address" Width="130" />
+        <GridColumn Field="ShipRegion" HeaderText="Ship Region" Width="90" />
+        <GridColumn Field="ShipPostalCode" HeaderText="Ship Postal Code" Width="90" />
+        <GridColumn Field="ShipCountry" HeaderText="Ship Country" Width="100" />
+    </GridColumns>
+</SfGrid>
+
+@code {
+    private SfGrid<OrderData> Grid;
+    private bool DisableHorizontalOverflow = false;
+
+    public List<OrderData> Orders { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Orders = OrderData.GetAllRecords();
+    }
+    public async Task ToolbarClickHandler(ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_pdfexport") //Id is combination of Grid's ID and itemname.
+        {
+            var pdfExportProps = new PdfExportProperties
+                {
+                    AllowHorizontalOverflow = !DisableHorizontalOverflow
+                };
+            await Grid.ExportToPdfAsync(pdfExportProps);
+        }
+    }
+}
+
