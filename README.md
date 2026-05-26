@@ -59,5 +59,4 @@ dotnet run
 ## Resources
 
 - [Blazor Exporting Documentation](https://blazor.syncfusion.com/documentation/datagrid/excel-exporting)
-- [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core)
-- [Blazor Documentation](https://learn.microsoft.com/en-us/aspnet/core/blazor)
+- [Online Export Demo](https://blazor.syncfusion.com/demos/datagrid/exporting?theme=fluent2)
