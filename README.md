@@ -1,6 +1,6 @@
 # Blazor DataGrid Export Examples
 
-A comprehensive collection of Blazor DataGrid export samples demonstrating various export scenarios including memory streams, PDF generation, Excel conversion, and file handling techniques.
+A comprehensive collection of [Blazor DataGrid]() export samples demonstrating various export scenarios including memory streams, PDF generation, Excel conversion, and file handling techniques.
 
 ## Overview
 
@@ -15,74 +15,14 @@ The samples cover:
 - **File Management** — Save exports with proper headers and encoding
 - **PDF Advanced Features** — Rotate headers, handle horizontal overflow
 
-## Sample Projects
+## Features
 
-### Excel Export Examples
-
-#### Exporting_Memory_Stream
-Demonstrates how to export Syncfusion Blazor DataGrid data to Excel format using memory streams.
-
-```bash
-cd Exporting_Memory_Stream/Exporting_Stream
-dotnet run
-```
-
-**Key Features:**
-- Export to Excel from DataGrid toolbar
-- Handle binary data as memory streams
-- Download files to the client
-
-### PDF Export Examples
-
-#### Blazor_Memory_Stream
-Basic example of exporting DataGrid to PDF using memory streams.
-
-```bash
-cd Exporting-PDF-Datagrid/Blazor_Memory_Stream
-dotnet run
-```
-
-#### Merging_Two_PDF_Memory_Stream
-Combine multiple DataGrid exports into a single PDF file.
-
-```bash
-cd Exporting-PDF-Datagrid/Merging_Two_PDF_Memory_Stream
-dotnet run
-```
-
-#### Rotate_header
-Export to PDF with rotated column headers for better readability of wide tables.
-
-```bash
-cd Exporting-PDF-Datagrid/Rotate_header
-dotnet run
-```
-
-#### Horizontal_overflow
-Handle DataGrids with many columns that exceed page width.
-
-```bash
-cd Exporting-PDF-Datagrid/Horizontal_overflow
-dotnet run
-```
-
-### Stream Conversion Examples
-
-#### Converting_Memory_File_Stream
-Convert between memory streams and file streams for flexible data handling.
-
-```bash
-cd Converting_Memory_File_Stream/Exporting_Stream
-dotnet run
-```
-
-#### Merging_Two_Excel_Memory_Streams
-Merge multiple Excel exports into a single workbook.
-
-```bash
-cd Merging_Two_Excel_Memory_Streams/Exporting_Stream
-dotnet run
-```
+- **Progress Tracking** — Real-time export progress indicators for large datasets
+- **Custom Formatting** — Apply custom styles and formatting to exported files
+- **Batch Processing** — Export multiple files simultaneously in batch mode
+- **Error Handling** — Comprehensive error management and recovery mechanisms
+- **File Compression** — Compress exported files and create ZIP archives
+- **Schedule Exports** — Automated scheduling for periodic exports
 
 ## Prerequisites
 
@@ -118,6 +58,6 @@ dotnet run
 
 ## Resources
 
-- [Blazor DataGrid Documentation](https://www.syncfusion.com/blazor-components/blazor-datagrid)
+- [Blazor Exporting Documentation](https://blazor.syncfusion.com/documentation/datagrid/excel-exporting)
 - [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core)
 - [Blazor Documentation](https://learn.microsoft.com/en-us/aspnet/core/blazor)
